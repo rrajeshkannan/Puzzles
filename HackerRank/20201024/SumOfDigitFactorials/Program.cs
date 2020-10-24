@@ -46,9 +46,12 @@ class Solution
                 var sumOfFactorialsOfDigits = SumOfDigits(i, digit => Factorial(digit));
                 var sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
 
-                // TODO: repetition here! correct it! for e.g. i == 4
-                iResult = sumOfDigitsOfSumOfFactorialsOfDigits;
-                _smallestNumberMapping.Add(iResult, i);
+                if (!_smallestNumberMapping.ContainsKey(sumOfDigitsOfSumOfFactorialsOfDigits))
+                {
+                    _smallestNumberMapping.Add(sumOfDigitsOfSumOfFactorialsOfDigits, i);
+
+                    if ()
+                }
             }
 
             if (iResult == n)
@@ -79,6 +82,8 @@ class Solution
 
     static void Main(String[] args)
     {
+        // ulong resultTemp = SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(4); // 14
+
         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution */
         int numberOfQueries = Int32.Parse(Console.ReadLine());
 
