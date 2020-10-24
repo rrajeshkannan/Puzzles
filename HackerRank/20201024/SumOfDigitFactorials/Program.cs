@@ -4,7 +4,8 @@ using System.IO;
 
 class Solution
 {
-    static uint Factorial(uint n)
+    // https://www.hackerrank.com/contests/projecteuler/challenges/euler254/problem
+    static uint f(uint n)
     {
         if(n == 0)
         {
@@ -31,8 +32,10 @@ class Solution
 
     static ulong SmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(ulong n)
     {
-        // Find smallest positive integer "i" such that: SumOfDigitsOfSumOfFactorialsOfDigits(i) == n
-        if (_smallestNumberMapping.TryGetValue(n, out ulong nResult))
+        var sumOfFactorialsOfDigits = SumOfDigits(n, digit => Factorial(digit));
+        var sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
+
+        if (_smallestNumberMapping.TryGetValue(sumOfDigitsOfSumOfFactorialsOfDigits, out ulong nResult))
         {
             return nResult;
         }
@@ -41,28 +44,23 @@ class Solution
 
         while (true)
         {
-            if (!_smallestNumberMapping.TryGetValue(i, out ulong iResult))
+            sumOfFactorialsOfDigits = SumOfDigits(i, digit => Factorial(digit));
+            sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
+
+            //if (!_smallestNumberMapping.ContainsKey(sumOfDigitsOfSumOfFactorialsOfDigits))
+            //{
+            //    _smallestNumberMapping.Add(sumOfDigitsOfSumOfFactorialsOfDigits, i);
+            //}
+
+            // Find smallest positive integer "i" such that: SumOfDigitsOfSumOfFactorialsOfDigits(i) == n
+            if (sumOfDigitsOfSumOfFactorialsOfDigits == n)
             {
-                var sumOfFactorialsOfDigits = SumOfDigits(i, digit => Factorial(digit));
-                var sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
-
-                if (!_smallestNumberMapping.ContainsKey(sumOfDigitsOfSumOfFactorialsOfDigits))
-                {
-                    _smallestNumberMapping.Add(sumOfDigitsOfSumOfFactorialsOfDigits, i);
-
-                    if ()
-                }
-            }
-
-            if (iResult == n)
-            {
-                break;
+                _smallestNumberMapping.Add(sumOfDigitsOfSumOfFactorialsOfDigits, i);
+                return i;
             }
 
             i++;
         }
-
-        return i;
     }
 
     static ulong SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(ulong n)
@@ -82,7 +80,11 @@ class Solution
 
     static void Main(String[] args)
     {
-        // ulong resultTemp = SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(4); // 14
+        //ulong resultTemp1 = SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(4); // 11
+        //ulong resultTemp2 = SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(20); // 156
+        //ulong resultTemp3 = SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(5); // 156
+
+        ulong resultTemp11 = SmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(4); // 15
 
         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution */
         int numberOfQueries = Int32.Parse(Console.ReadLine());
