@@ -4,7 +4,7 @@ using System.IO;
 
 class Solution
 {
-    static long Factorial(long n)
+    static uint Factorial(uint n)
     {
         if(n == 0)
         {
@@ -14,53 +14,62 @@ class Solution
         return n * Factorial(n - 1);
     }
 
-    static long SumOfDigits(long n)
+    static ulong SumOfDigits(ulong n, Func<uint, uint> digitTransform)
     {
         if (n == 0)
         {
             return 0;
         }
 
-        int lastDigit = (int)(n % 10);
-        long numberExcludingLastDigit = n / 10;
+        uint lastDigit = (uint)(n % 10);
+        ulong numberExcludingLastDigit = n / 10;
 
-        return lastDigit + SumOfDigits(numberExcludingLastDigit);
+        return digitTransform(lastDigit) + SumOfDigits(numberExcludingLastDigit, digitTransform);
     }
 
-    static long SumOfDigitsOfFactorial(long n)
-    {
-        return SumOfDigits(Factorial(n));
-    }
+    static Dictionary<ulong, ulong> _smallestNumberMapping = new Dictionary<ulong, ulong>();
 
-    static long SmallestNumberForSumOfDigitsOfFactorial(long i)
+    static ulong SmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(ulong n)
     {
-        // Find smallest positive integer "n" such that: SumOfDigits(Factorial(n)) == i
-        long n = 1;
+        // Find smallest positive integer "i" such that: SumOfDigitsOfSumOfFactorialsOfDigits(i) == n
+        ulong i = 1;
 
-        while(SumOfDigitsOfFactorial(n) != i)
+        if (_smallestNumberMapping.TryGetValue(n, out ulong result))
         {
-            n++;
+            return result;
         }
 
-        return n;
-    }
-
-    static long SumOfMinimumNumbersForSumOfDigitsOfFactorial(int n)
-    {
-        var mappingsForSumOfDigitsOfFactorialToSmallestNumber = new Dictionary<long, long>();
-        long result = 0;
-
-        for (int i = 1; i <= n; i++)
+        while(true)
         {
-            var sumOfDigitsOfFactorial = SumOfDigitsOfFactorial(i);
-
-            if (!mappingsForSumOfDigitsOfFactorialToSmallestNumber.TryGetValue(sumOfDigitsOfFactorial, out long smallestNumberForSumOfDigitsOfFactorial))
+            if (_smallestNumberMapping.TryGetValue(n, out ulong result))
             {
-                smallestNumberForSumOfDigitsOfFactorial = SmallestNumberForSumOfDigitsOfFactorial(i);
-                mappingsForSumOfDigitsOfFactorialToSmallestNumber.Add(sumOfDigitsOfFactorial, smallestNumberForSumOfDigitsOfFactorial);
+                return result;
             }
 
-            result += SumOfDigits(smallestNumberForSumOfDigitsOfFactorial);
+            var sumOfFactorialsOfDigits = SumOfDigits(i, digit => Factorial(digit));
+            var sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
+
+            if (sumOfDigitsOfSumOfFactorialsOfDigits == n)
+            {
+                break;
+            }
+
+            i++;
+        }
+
+        return i;
+    }
+
+    static ulong SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(ulong n)
+    {
+        ulong result = 0;
+
+        for (ulong l = 1; l <= n; l++)
+        {
+            var interimResult = SmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(l);
+            var sumOfDigitsOfInterimResult = SumOfDigits(interimResult, digit => digit);
+
+            result += sumOfDigitsOfInterimResult;
         }
 
         return result;
@@ -71,14 +80,20 @@ class Solution
         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution */
         int numberOfQueries = Int32.Parse(Console.ReadLine());
 
-        while (numberOfQueries-- > 0)
+        ulong[] n = new ulong[numberOfQueries];
+        ulong[] m = new ulong[numberOfQueries];
+
+        for (int i = 0; i < numberOfQueries; i++)
         {
             string[] digitModulo = Console.ReadLine().Split(' ');
 
-            int n = Convert.ToInt32(digitModulo[0]);
-            long m = Convert.ToInt32(digitModulo[1]);
+            n[i] = Convert.ToUInt64(digitModulo[0]);
+            m[i] = Convert.ToUInt64(digitModulo[1]);
+        }
 
-            long result = SumOfMinimumNumbersForSumOfDigitsOfFactorial(n) % m;
+        for (int i = 0; i < numberOfQueries; i++)
+        {
+            ulong result = SumOfAllSmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(n[i]) % m[i];
 
             Console.WriteLine(result);
         }
