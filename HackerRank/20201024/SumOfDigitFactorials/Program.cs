@@ -32,24 +32,26 @@ class Solution
     static ulong SmallestNumberForSumOfDigitsOfSumOfFactorialsOfDigits(ulong n)
     {
         // Find smallest positive integer "i" such that: SumOfDigitsOfSumOfFactorialsOfDigits(i) == n
-        ulong i = 1;
-
-        if (_smallestNumberMapping.TryGetValue(n, out ulong result))
+        if (_smallestNumberMapping.TryGetValue(n, out ulong nResult))
         {
-            return result;
+            return nResult;
         }
 
-        while(true)
+        ulong i = 1;
+
+        while (true)
         {
-            if (_smallestNumberMapping.TryGetValue(n, out ulong result))
+            if (!_smallestNumberMapping.TryGetValue(i, out ulong iResult))
             {
-                return result;
+                var sumOfFactorialsOfDigits = SumOfDigits(i, digit => Factorial(digit));
+                var sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
+
+                // TODO: repetition here! correct it! for e.g. i == 4
+                iResult = sumOfDigitsOfSumOfFactorialsOfDigits;
+                _smallestNumberMapping.Add(iResult, i);
             }
 
-            var sumOfFactorialsOfDigits = SumOfDigits(i, digit => Factorial(digit));
-            var sumOfDigitsOfSumOfFactorialsOfDigits = SumOfDigits(sumOfFactorialsOfDigits, digit => digit);
-
-            if (sumOfDigitsOfSumOfFactorialsOfDigits == n)
+            if (iResult == n)
             {
                 break;
             }
