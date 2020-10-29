@@ -27,22 +27,22 @@ class Solution
 
     static void Main(string[] args)
     {
-        //var queriesCount = Convert.ToUInt32(Console.ReadLine());
-        //var queries = new Query[queriesCount];
+        var queriesCount = Convert.ToUInt32(Console.ReadLine());
+        var queries = new Query[queriesCount];
 
-        //for (uint i = 0; i < queriesCount; i++)
-        //{
-        //    string[] input = Console.ReadLine().Split(' ');
+        for (uint i = 0; i < queriesCount; i++)
+        {
+            string[] input = Console.ReadLine().Split(' ');
 
-        //    queries[i] = new Query { N = Convert.ToUInt32(input[0]), K = Convert.ToUInt32(input[1]) };
-        //}
+            queries[i] = new Query { N = Convert.ToUInt32(input[0]), K = Convert.ToUInt32(input[1]) };
+        }
 
-        var queries = new Query[] {
-            new Query { N = 5, K = 2 },
-            new Query { N = 8, K = 5 },
-            new Query { N = 2, K = 2 },
-        };
-        var queriesCount = queries.Length;
+        //var queries = new Query[] {
+        //    new Query { N = 5, K = 2 },
+        //    new Query { N = 8, K = 5 },
+        //    new Query { N = 2, K = 2 },
+        //};
+        //var queriesCount = queries.Length;
 
 
         for (uint i = 0; i < queriesCount; i++)
