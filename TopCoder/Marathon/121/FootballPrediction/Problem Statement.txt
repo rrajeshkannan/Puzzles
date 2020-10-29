@@ -10,12 +10,66 @@ Points:
   * The losing team receives no points.
 
 ------------------------------------------
- 
+
+The following are details on how the game outcomes are generated.
+
+In the beginning of the tournament, each team is assigned two values. These values do not change throughout the tournament.
+  * an attack strength and 
+  * a defence strength
+
+Each game is generated using X independent simulations.
+  * Each simulation consists of 6 rounds:
+      * 3 rounds when the first team is attacking and 
+      * 3 rounds when the second team is attacking.
+  * One round of team 1 attacking team 2 is simulated like so:
+      * A1 is chosen uniformly at random between 1 and team 1's attack strength, inclusive.
+      * D2 is chosen uniformly at random between 1 and team 2's defence strength, inclusive.
+      * If A1 > D2 then team 1 scores one goal.
+  * Similarly we simulate team 2 attacking team 1.
+  * Since there are 3 attacking rounds for each team, the most number of goals a team can score is 3.
+  * The final game score is the rounded average of all X simulation scores.
+  * For example, 
+      * suppose X=3 and we generated the following scores: 3:2, 3:0 and 2:2.
+      * The first team scored on average (3+3+2)/3 = 2.67 goals, while the second team scored on average (2+0+2)/3 = 1.33 goals. 
+      * After the rounding the final game score will be recorded as 3:1. 
+  * We use standard rounding, where 0.5 rounds up.
+  * Note that the final game score could be different to all the simulation scores, as it is the case here.
+
+The game outcome is decided based on the game scores.
+  * The winning team is the one who has scored more goals.
+  * If both teams scored the same number of goals then the game is a draw.
+
+------------------------------------------
+
 Problem:
   Your task is to reconstruct the result of each game given:
     * the total number of goals scored
     * goals conceded and 
     * points earned by each team
+
+Input:
+  Your code will receive as input the following values, each on a separate line:
+    * N, the number of teams.
+    * W, the number of points awarded for winning a game.
+    * D, the number of points awarded for drawing a game.
+    * X, the number of simulations per game.
+    * N lines, where the i-th line contains the final result of the i-th team formatted as:
+        "goals_scored goals_conceded points_earned" (without the quotes)
+
+Output:
+  Your code should write to output the following:
+    * On the first line, K=N*(N-1)/2, the total number of games played.
+    * K lines, where the i-th line contains your predicted result for the i-th game.
+    * Each line should be formatted as:
+        * "scored1 scored2" (without the quotes), 
+        * where scored1 is the number of goals scored by the first team and 
+        * scored2 is the number of goals scored by the second team.
+    * The order of the games is given by this pseudo-code:
+        i=0
+        for team1 = 0 to N-1
+          for team2 = team1+1 to N
+            //i-th game is between team1 and team2
+            i++
 
 ------------------------------------------
 
