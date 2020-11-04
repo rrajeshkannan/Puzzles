@@ -27,32 +27,15 @@ namespace MinimumHeightTrees
     {
         public int Label { get; set; }
         public List<TreeNode> Edges { get; set; }
-
-        private int? _depth;
-
-        public int? Depth
-        {
-            get
-            {
-                if (!_depth.HasValue)
-                {
-                    _depth = CalculateDepth(new HashSet<int>() { this.Label });
-                }
-
-                return _depth;
-            }
-
-            set
-            {
-                _depth = value;
-            }
-        }
+        public bool Candidate { get; set; }
+        public int? Depth { get; set; }
 
         public TreeNode(int label)
         {
             this.Label = label;
             this.Edges = new List<TreeNode>();
-            this._depth = null;
+            this.Candidate = true;
+            this.Depth = null;
         }
 
         public override string ToString()
@@ -60,11 +43,23 @@ namespace MinimumHeightTrees
             return this.Label.ToString();
         }
 
-        public int CalculateDepth(HashSet<int> visited)
+        public int CalculateDepth(int terminalDepth, ref bool candidate)
+        {
+            return CalculateDepth(new HashSet<int>() { this.Label }, terminalDepth, ref candidate);
+        }
+
+        public int CalculateDepth(HashSet<int> visited, int terminalDepth, ref bool candidate)
         {
             if (!this.Edges.Any())
             {
                 return 0;
+            }
+
+            if (!this.Candidate)
+            {
+                // this node which is on the way is already not a candidate in the race, no need to consider the tree that constitutes this
+                candidate = false;
+                return Int32.MaxValue;
             }
 
             var maxDepth = 0;
@@ -82,7 +77,7 @@ namespace MinimumHeightTrees
 
                 if (!child.Depth.HasValue)
                 {
-                    child.Depth = child.CalculateDepth(visited);
+                    child.Depth = child.CalculateDepth(visited, terminalDepth, ref candidate);
                 }
 
                 var depthOfSubtree = child.Depth.Value;
@@ -91,6 +86,18 @@ namespace MinimumHeightTrees
                 if (maxDepth < depthOfSubtree)
                 {
                     maxDepth = depthOfSubtree;
+                }
+
+                if (maxDepth > terminalDepth)
+                {
+                    // at least one child path is going beyond allowed terminalDepth
+                    // so, no need to consider the tree with this "root" further in the race
+                    candidate = false;
+                }
+
+                if (!candidate)
+                {
+                    break;
                 }
             }
 
