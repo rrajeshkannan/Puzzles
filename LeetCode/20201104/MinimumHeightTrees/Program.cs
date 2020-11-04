@@ -27,37 +27,39 @@ namespace MinimumHeightTrees
     {
         public int Label { get; set; }
         public List<TreeNode> Edges { get; set; }
+        public bool Candidate { get; set; }
+        public int? Depth { get; set; }
 
         public TreeNode(int label)
         {
             this.Label = label;
             this.Edges = new List<TreeNode>();
+            this.Candidate = true;
+            this.Depth = null;
         }
 
         public override string ToString()
         {
             return this.Label.ToString();
-
-            //StringBuilder text = new StringBuilder();
-
-            //foreach (var edge in Edges)
-            //{
-            //    text.Append(String.Format("{0}->{1} | ", this.Label, edge.Label));
-            //}
-
-            //return text.ToString();
         }
 
-        public int Depth(int terminalDepth, ref bool interimTermination)
+        public int CalculateDepth(int terminalDepth, ref bool candidate)
         {
-            return Depth(new HashSet<int>() { this.Label }, terminalDepth, ref interimTermination);
+            return CalculateDepth(new HashSet<int>() { this.Label }, terminalDepth, ref candidate);
         }
 
-        public int Depth(HashSet<int> visited, int terminalDepth, ref bool interimTermination)
+        public int CalculateDepth(HashSet<int> visited, int terminalDepth, ref bool candidate)
         {
             if (!this.Edges.Any())
             {
                 return 0;
+            }
+
+            if (!this.Candidate)
+            {
+                // this node is already not a candidate in the race, no need to walk further
+                candidate = false;
+                return Int32.MaxValue;
             }
 
             var maxDepth = 0;
@@ -67,13 +69,18 @@ namespace MinimumHeightTrees
                 if (visited.Contains(child.Label))
                 {
                     // edges are undirected and tree is acyclic -> so, the target node can only be such that it is already visited
-                    // no need to continue treading this path further
+                    // no need to continue walking this path further
                     continue;
                 }
 
                 visited.Add(child.Label);
 
-                var depthOfSubtree = child.Depth(visited, terminalDepth, ref interimTermination);
+                if (!child.Depth.HasValue)
+                {
+                    child.Depth = child.CalculateDepth(visited, terminalDepth, ref candidate);
+                }
+
+                var depthOfSubtree = child.Depth.Value;
 
                 // The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
                 if (maxDepth < depthOfSubtree)
@@ -85,10 +92,10 @@ namespace MinimumHeightTrees
                 {
                     // at least one child path is going beyond allowed terminalDepth
                     // so, no need to consider the tree with this "root" further in the race
-                    interimTermination = true;
+                    candidate = false;
                 }
 
-                if (interimTermination)
+                if (!candidate)
                 {
                     break;
                 }
@@ -128,13 +135,6 @@ namespace MinimumHeightTrees
             }
 
             return tree;
-
-            //var maxChildren = tree
-            //    .Max(treeNode => treeNode.Edges.Count);
-
-            //// Consider only the tree-node with many edges, because, it would contribute to the minimum height tree
-            //return tree
-            //    .Where(treeNode => maxChildren == treeNode.Edges.Count);
         }
 
         public IList<int> FindMinHeightTrees(int n, int[][] edges)
@@ -149,11 +149,11 @@ namespace MinimumHeightTrees
             // 3. Continue with every other node
             foreach (var root in tree)
             {
-                bool interimTermination = false;
-                var depth = root.Depth(minimumHeight, ref interimTermination);
+                bool candidate = true;
+                var depth = root.CalculateDepth(minimumHeight, ref candidate);
 
-                // if (interimTermination) - no need to consider the tree with this root as it is anyway, a taller tree
-                if (!interimTermination)
+                // if (!candidate) - no need to consider the tree with this root as it is anyway, a taller tree
+                if (candidate)
                 {
                     if (minimumHeight == depth)
                     {
