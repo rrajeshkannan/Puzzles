@@ -27,18 +27,15 @@ namespace MinimumHeightTrees
     {
         public int Label { get; set; }
         public List<TreeNode> Edges { get; set; }
+        // Can this node be a candidate for contributing to Minimum Height Tree?
+        // If it is located on the way that is in the race, no need to consider the tree that constitutes this
+        public bool Candidate { get; set; }
 
         private int? _depth;
-
         public int? Depth
         {
             get
             {
-                if (!_depth.HasValue)
-                {
-                    _depth = CalculateDepth(new HashSet<int>() { this.Label });
-                }
-
                 return _depth;
             }
 
@@ -60,7 +57,12 @@ namespace MinimumHeightTrees
             return this.Label.ToString();
         }
 
-        public int CalculateDepth(HashSet<int> visited)
+        public int CalculateDepth()
+        {
+            return CalculateDepth(new HashSet<int>() { this.Label });
+        }
+
+        private int CalculateDepth(HashSet<int> visited)
         {
             if (!this.Edges.Any())
             {
@@ -80,12 +82,7 @@ namespace MinimumHeightTrees
 
                 visited.Add(child.Label);
 
-                if (!child.Depth.HasValue)
-                {
-                    child.Depth = child.CalculateDepth(visited);
-                }
-
-                var depthOfSubtree = child.Depth.Value;
+                var depthOfSubtree = child.Depth ?? child.CalculateDepth(visited);
 
                 // The height of a rooted tree is the number of edges on the longest downward path between the root and a leaf.
                 if (maxDepth < depthOfSubtree)
@@ -142,23 +139,18 @@ namespace MinimumHeightTrees
             // 3. Continue with every other node
             foreach (var root in tree)
             {
-                bool candidate = true;
-                var depth = root.CalculateDepth(minimumHeight, ref candidate);
+                var depth = root.CalculateDepth();
 
-                // if (!candidate) - no need to consider the tree with this root as it is anyway, a taller tree
-                if (candidate)
+                if (minimumHeight == depth)
                 {
-                    if (minimumHeight == depth)
-                    {
-                        // another tree with same minimum height -> add it
-                        minimumHeightTreeRoots.Add(root.Label);
-                    }
-                    else if (minimumHeight > depth)
-                    {
-                        // found a new minimum height -> discard already found lists and start considering new ones
-                        minimumHeight = depth;
-                        minimumHeightTreeRoots = new List<int> { root.Label };
-                    }
+                    // another tree with same minimum height -> add it
+                    minimumHeightTreeRoots.Add(root.Label);
+                }
+                else if (minimumHeight > depth)
+                {
+                    // found a new minimum height -> discard already found lists and start considering new ones
+                    minimumHeight = depth;
+                    minimumHeightTreeRoots = new List<int> { root.Label };
                 }
             }
 
@@ -178,7 +170,7 @@ namespace MinimumHeightTrees
                 new int[] {1, 2},
                 new int[] {1, 3},
             };
-            var result1 = solution.FindMinHeightTrees(4, edges1);
+            var result1 = solution.FindMinHeightTrees(4, edges1); // [1]
 
             var edges2 = new int[][]
             {
@@ -188,19 +180,19 @@ namespace MinimumHeightTrees
                 new int[] {3,4},
                 new int[] {5,4},
             };
-            var result2 = solution.FindMinHeightTrees(6, edges2);
+            var result2 = solution.FindMinHeightTrees(6, edges2); // [3,4]
 
             var edges3 = new int[][]
             {
                 new int[]{},
             };
-            var result3 = solution.FindMinHeightTrees(1, edges3);
+            var result3 = solution.FindMinHeightTrees(1, edges3); // [0]
 
             var edges4 = new int[][]
             {
                 new int[]{0, 1},
             };
-            var result4 = solution.FindMinHeightTrees(2, edges4);
+            var result4 = solution.FindMinHeightTrees(2, edges4); // [0,1]
 
             var edges5 = new int[][]
             {
