@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{91743EC9-FCE2-40C3-B7A6-34A2D3AF207F}</ProjectGuid>
+    <ProjectGuid>{6A80D50E-7631-418A-A0B3-7F3F0496815B}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MinimumHeightTrees</RootNamespace>
-    <AssemblyName>MinimumHeightTrees</AssemblyName>
+    <RootNamespace>MoveChipsUsingParity</RootNamespace>
+    <AssemblyName>MoveChipsUsingParity</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
