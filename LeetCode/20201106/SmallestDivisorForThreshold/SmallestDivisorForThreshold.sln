@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmallestDivisorForThreshold", "SmallestDivisorForThreshold.csproj", "{B068DCB3-69F7-4403-9702-E698B642288C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B068DCB3-69F7-4403-9702-E698B642288C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B068DCB3-69F7-4403-9702-E698B642288C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B068DCB3-69F7-4403-9702-E698B642288C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B068DCB3-69F7-4403-9702-E698B642288C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76DFDF2E-0A9A-40F8-9D3A-781EEC484BC8}
+	EndGlobalSection
+EndGlobal
