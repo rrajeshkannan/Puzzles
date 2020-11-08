@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SellDiminishingValueColoredBalls", "SellDiminishingValueColoredBalls.csproj", "{A6DEF423-9683-42A4-B4FA-537790707DEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6DEF423-9683-42A4-B4FA-537790707DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DEF423-9683-42A4-B4FA-537790707DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DEF423-9683-42A4-B4FA-537790707DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DEF423-9683-42A4-B4FA-537790707DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {899604E1-9B52-463F-A499-E534F3768097}
+	EndGlobalSection
+EndGlobal
