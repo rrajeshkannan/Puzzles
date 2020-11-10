@@ -33,49 +33,75 @@ namespace BinaryTreeNodeAncestor
     {
         public int MaxAncestorDiff(TreeNode root)
         {
-            return MaxAncestorDiff(root, out int? minDescendant);
-        }
-
-        public int MaxAncestorDiff(TreeNode root, out int? minDescendant)
-        {
             if (root == null)
             {
-                minDescendant = null;
                 return 0;
             }
 
-            var maxAncestorDiff = Math.Max(
-                MaxAncestorDiff(root.left, out int? leftMinDescendant),
-                MaxAncestorDiff(root.right, out int? rightMinDescendant));
+            return MaxAncestorDiff(root, out int minDescendant, out int maxDescendant);
+        }
 
-            if (leftMinDescendant.HasValue)
+        public int MaxAncestorDiff(TreeNode root, out int minDescendant, out int maxDescendant)
+        {
+            var leftPresent = root.left != null;
+            var rightPresent = root.right != null;
+
+            int leftMaxAncestorDiff = 0;
+            int rightMaxAncestorDiff = 0;
+
+            int maxDescendantBelow;
+            int? minDescendantBelow;
+
+            if (leftPresent)
             {
-                if (rightMinDescendant.HasValue)
+                leftMaxAncestorDiff = MaxAncestorDiff(root.left, out int leftMinDescendant, out int leftMaxDescendant);
+
+                if (rightPresent)
                 {
-                    minDescendant = Math.Min(leftMinDescendant.Value, rightMinDescendant.Value);
+                    rightMaxAncestorDiff = MaxAncestorDiff(root.right, out int rightMinDescendant, out int rightMaxDescendant);
+
+                    minDescendantBelow = Math.Min(leftMinDescendant, rightMinDescendant);
+                    maxDescendantBelow = Math.Max(leftMaxDescendant, rightMaxDescendant);
                 }
                 else
                 {
-                    minDescendant = leftMinDescendant;
+                    minDescendantBelow = leftMinDescendant;
+                    maxDescendantBelow = leftMaxDescendant;
                 }
             }
+            else if (rightPresent)
+            {
+                rightMaxAncestorDiff = MaxAncestorDiff(root.right, out int rightMinDescendant, out int rightMaxDescendant);
+
+                minDescendantBelow = rightMinDescendant;
+                maxDescendantBelow = rightMaxDescendant;
+            }
             else
             {
-                minDescendant = rightMinDescendant;
+                minDescendantBelow = null;
+                maxDescendantBelow = 0;
             }
 
-            if (!minDescendant.HasValue)
+            int maxAncestorDiff;
+
+            if (minDescendantBelow.HasValue)
             {
+                minDescendant = Math.Min(root.val, minDescendantBelow.Value);
+                maxDescendant = Math.Max(root.val, maxDescendantBelow);
+
+                maxAncestorDiff = Math.Max(Math.Abs(root.val - minDescendantBelow.Value), Math.Abs(root.val - maxDescendantBelow));
+                maxAncestorDiff = Math.Max(maxAncestorDiff, leftMaxAncestorDiff);
+                maxAncestorDiff = Math.Max(maxAncestorDiff, rightMaxAncestorDiff);
+            }
+            else
+            {
+                // both side descendants - left and right - are not available
                 minDescendant = root.val;
-                return 0;
+                maxDescendant = root.val;
+                maxAncestorDiff = 0;
             }
-            else
-            {
-                maxAncestorDiff = Math.Max(maxAncestorDiff, Math.Abs(root.val - minDescendant.Value));
-                minDescendant = Math.Min(root.val, minDescendant.Value);
 
-                return maxAncestorDiff;
-            }
+            return maxAncestorDiff;
         }
     }
 
@@ -111,6 +137,27 @@ namespace BinaryTreeNodeAncestor
 
             var root3 = new TreeNode(1);
             var result3 = solution.MaxAncestorDiff(root3); // 0
+
+            var root4 = new TreeNode(3, new TreeNode(1));
+            var result4 = solution.MaxAncestorDiff(root4); // 2
+
+            var root5 = new TreeNode(3, new TreeNode(2), new TreeNode(1));
+            var result5 = solution.MaxAncestorDiff(root5); // 2
+
+            var root6 = new TreeNode(
+                2,
+                null,
+                new TreeNode(
+                    0,
+                    null,
+                    new TreeNode(
+                        4,
+                        null,
+                        new TreeNode(
+                            3,
+                            null,
+                            new TreeNode(1)))));
+            var result6 = solution.MaxAncestorDiff(root6); // 4
         }
     }
 }
