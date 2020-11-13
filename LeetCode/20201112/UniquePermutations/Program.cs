@@ -24,6 +24,7 @@ namespace UniquePermutations
     {
         // Permutes the list into next permutation
         //   where the set of all permutations is ordered lexicographically with respect to "compareLessThan" function.
+        // This method is inspired from: https://en.cppreference.com/w/cpp/algorithm/next_permutation
         private static bool NextPermutation<T>(List<T> list, Func<T, T, bool> compareLessThan)
         {
             if (list.Count() < 2)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,6 @@ namespace ShortestSubarrayWithSum
     // Example 3:
     //   Input: A = [2,-1,2], K = 3
     //   Output: 3
-
     public class Solution
     {
         public int ShortestSubarray(int[] A, int K)
@@ -30,41 +30,35 @@ namespace ShortestSubarrayWithSum
                 return -1;
             }
 
-            var list = A.OrderByDescending(item => item).ToArray();
+            var length = A.Length;
 
-            if (list.Last() > K)
+            var tempLength = length * (length + 1) / 2;
+            var temp = new int[tempLength];
+            var running = 0;
+
+            for (int i = 0; i < length; i++)
             {
-                // at least one element in "A" should be less than or equal to K
-                return -1;
-            }
-            
-            int i = 0;
+                if (A[i] == K)
+                {
+                    // nothing can be lesser than 1
+                    return 1;
+                }
 
-            for (; (i < list.Length) && (list[i] > K); i++)
-                ;
+                var tempSumEnd = running;
+                var tempSumBegin = running - i;
 
-            if (i == list.Length)
-            {
-                // all elements are less than or equal to K, so, let's start from beginning
-                i = 0;
-            }
+                temp[running++] = A[i];
 
-            int begin = i;
-            int sum = 0;
-
-            for (; (i < list.Length) && sum < K; i++)
-            {
-                sum += list[i];
-            }
-
-            if (sum >= K)
-            {
-                return i - begin;
+                for (int j = tempSumBegin; j < tempSumEnd; j++)
+                {
+                    temp[running++] = A[i] + A[j];
+                }
             }
 
             return -1;
         }
     }
+
 
     class Program
     {
@@ -80,6 +74,104 @@ namespace ShortestSubarrayWithSum
 
             var a3 = new int[] { 2, -1, 2 };
             var result3 = solution.ShortestSubarray(a3, 3); // 3
+
+            var a4 = new int[] { 2, 2, -1 };
+            var result4 = solution.ShortestSubarray(a4, 3); // 2
+
+            
+            //var a5 = TestData.Data1();
+            //Stopwatch watch = Stopwatch.StartNew();
+            //var result5 = solution.ShortestSubarray(a5, 5006414);
+            //watch.Stop();
+
+            //var time = watch.ElapsedMilliseconds;
         }
     }
 }
+
+//public class TimeExceededSolution
+//{
+//    public int ShortestSubarray(int[] A, int K)
+//    {
+//        if (!A.Any())
+//        {
+//            return -1;
+//        }
+
+//        var found = false;
+//        var minSubarrayLength = int.MaxValue;
+//        var length = A.Length;
+
+//        for (int subarrayBegin = 0; subarrayBegin < length; subarrayBegin++)
+//        {
+//            var subarrayEnd = subarrayBegin;
+//            int sum = 0;
+
+//            for (; subarrayEnd < length; subarrayEnd++)
+//            {
+//                sum += A[subarrayEnd];
+
+//                if (sum >= K)
+//                {
+//                    found = true;
+
+//                    var currentSubarrayLength = subarrayEnd - subarrayBegin + 1;
+
+//                    if (currentSubarrayLength < minSubarrayLength)
+//                    {
+//                        minSubarrayLength = currentSubarrayLength;
+//                    }
+
+//                    break;
+//                }
+//            }
+//        }
+
+//        return found ? minSubarrayLength : -1;
+//    }
+//}
+
+//public class Solution
+//{
+//    public int ShortestSubarray(int[] A, int K)
+//    {
+//        if (!A.Any())
+//        {
+//            return -1;
+//        }
+
+//        var list = A.OrderByDescending(item => item).ToArray();
+
+//        if (list.Last() > K)
+//        {
+//            // at least one element in "A" should be less than or equal to K
+//            return -1;
+//        }
+
+//        int i = 0;
+
+//        for (; (i < list.Length) && (list[i] > K); i++)
+//            ;
+
+//        if (i == list.Length)
+//        {
+//            // all elements are less than or equal to K, so, let's start from beginning
+//            i = 0;
+//        }
+
+//        int begin = i;
+//        int sum = 0;
+
+//        for (; (i < list.Length) && sum < K; i++)
+//        {
+//            sum += list[i];
+//        }
+
+//        if (sum >= K)
+//        {
+//            return i - begin;
+//        }
+
+//        return -1;
+//    }
+//}
