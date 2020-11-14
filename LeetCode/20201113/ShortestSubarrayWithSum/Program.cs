@@ -36,8 +36,13 @@ namespace ShortestSubarrayWithSum
                 ;
         }
 
-        private bool SubarraySum (int[] A, int K, int length, int minSubarrayLength, ref int sum, ref int begin, ref int end)
+        private bool SubarraySumFirst(int[] A, int K, int length, int minSubarrayLength, ref int sum, ref int begin, ref int end)
         {
+            for (; ((begin < end) && (A[begin] <= 0)); begin++)
+            {
+                sum -= A[begin];
+            }
+
             int max = begin + minSubarrayLength;
 
             if (max > length)
@@ -45,18 +50,32 @@ namespace ShortestSubarrayWithSum
                 max = length;
             }
 
-            for (; ((begin < max) && (A[begin] <= 0)); begin++)
+            for (end = begin; end < max; end++)
+            {
+                sum += A[end];
+
+                if (sum >= K)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool SubarraySum (int[] A, int K, int length, int minSubarrayLength, ref int sum, ref int begin, ref int end)
+        {
+            for (; ((begin < end) && (A[begin] <= 0)); begin++)
             {
                 sum -= A[begin];
             }
 
-            max = begin + minSubarrayLength;
+            int max = begin + minSubarrayLength;
 
             if (max > length)
             {
                 max = length;
             }
-
 
             for (end = begin; end < max; end++)
             {
