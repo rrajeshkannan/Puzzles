@@ -21,8 +21,39 @@ namespace ShortestSubarrayWithSum
     // Example 3:
     //   Input: A = [2,-1,2], K = 3
     //   Output: 3
+
+    // 1 <= A.length <= 50000
+    // -10 ^ 5 <= A[i] <= 10 ^ 5
+    // 1 <= K <= 10 ^ 9
+
     public class Solution
     {
+        public int ProblemMax = 50000;
+
+        public bool SubarraySum (int[] A, int K, int length, int minSubarrayLength, int begin, out int end)
+        {
+            int max = begin + minSubarrayLength;
+
+            if (max > length)
+            {
+                max = length;
+            }
+
+            int sum = A[begin];
+
+            for (end = begin + 1; end < max; end++)
+            {
+                sum += A[end];
+
+                if (sum >= K)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public int ShortestSubarray(int[] A, int K)
         {
             if (!A.Any())
@@ -30,35 +61,36 @@ namespace ShortestSubarrayWithSum
                 return -1;
             }
 
-            var length = A.Length;
+            int length = A.Length;
+            var minSubarrayLength = ProblemMax + 1;
+            var found = false;
 
-            var tempLength = length * (length + 1) / 2;
-            var temp = new int[tempLength];
-            var running = 0;
-
-            for (int i = 0; i < length; i++)
+            for (int subarrayBegin = 0; subarrayBegin < length; subarrayBegin++)
             {
-                if (A[i] == K)
+                if (SubarraySum(A, K, length, minSubarrayLength, subarrayBegin, out int subarrayEnd))
                 {
-                    // nothing can be lesser than 1
-                    return 1;
-                }
+                    found = true;
 
-                var tempSumEnd = running;
-                var tempSumBegin = running - i;
+                    var currentSubarrayLength = subarrayEnd - subarrayBegin + 1;
 
-                temp[running++] = A[i];
+                    if (currentSubarrayLength < minSubarrayLength)
+                    {
+                        minSubarrayLength = currentSubarrayLength;
 
-                for (int j = tempSumBegin; j < tempSumEnd; j++)
-                {
-                    temp[running++] = A[i] + A[j];
+                        if (minSubarrayLength == 1)
+                        {
+                            // Nothing can be lesser than 1
+                            return 1;
+                        }
+                    }
+
+                    break;
                 }
             }
 
-            return -1;
+            return found ? minSubarrayLength : -1;
         }
     }
-
 
     class Program
     {
@@ -78,18 +110,28 @@ namespace ShortestSubarrayWithSum
             var a4 = new int[] { 2, 2, -1 };
             var result4 = solution.ShortestSubarray(a4, 3); // 2
 
-            
-            //var a5 = TestData.Data1();
-            //Stopwatch watch = Stopwatch.StartNew();
-            //var result5 = solution.ShortestSubarray(a5, 5006414);
-            //watch.Stop();
+            var a5 = TestData.Data1();
+            Stopwatch watch = Stopwatch.StartNew();
+            var result5 = solution.ShortestSubarray(a5, 5006414); // 19678
+            watch.Stop();
 
-            //var time = watch.ElapsedMilliseconds;
+            Console.WriteLine(result5);
+
+            var time = watch.ElapsedMilliseconds;
+            Console.WriteLine(time);
+            // 3416 - Debug
+            // 781 - Release
+
+            // 3403 - Debug
+            // 774 - Release
+            Console.ReadKey();
         }
     }
 }
 
-//public class TimeExceededSolution
+
+
+//public class TryingToOptimizeSolution
 //{
 //    public int ShortestSubarray(int[] A, int K)
 //    {
@@ -98,40 +140,37 @@ namespace ShortestSubarrayWithSum
 //            return -1;
 //        }
 
-//        var found = false;
-//        var minSubarrayLength = int.MaxValue;
 //        var length = A.Length;
 
-//        for (int subarrayBegin = 0; subarrayBegin < length; subarrayBegin++)
+//        var tempLength = length * (length + 1) / 2;
+//        var temp = new int[tempLength];
+//        var running = 0;
+
+//        for (int i = 0; i < length; i++)
 //        {
-//            var subarrayEnd = subarrayBegin;
-//            int sum = 0;
-
-//            for (; subarrayEnd < length; subarrayEnd++)
+//            if (A[i] == K)
 //            {
-//                sum += A[subarrayEnd];
+//                // nothing can be lesser than 1
+//                return 1;
+//            }
 
-//                if (sum >= K)
-//                {
-//                    found = true;
+//            var tempSumEnd = running;
+//            var tempSumBegin = running - i;
 
-//                    var currentSubarrayLength = subarrayEnd - subarrayBegin + 1;
+//            temp[running++] = A[i];
 
-//                    if (currentSubarrayLength < minSubarrayLength)
-//                    {
-//                        minSubarrayLength = currentSubarrayLength;
-//                    }
-
-//                    break;
-//                }
+//            for (int j = tempSumBegin; j < tempSumEnd; j++)
+//            {
+//                temp[running++] = A[i] + A[j];
 //            }
 //        }
 
-//        return found ? minSubarrayLength : -1;
+//        return -1;
 //    }
 //}
 
-//public class Solution
+
+//public class FirstSolution
 //{
 //    public int ShortestSubarray(int[] A, int K)
 //    {
@@ -144,7 +183,7 @@ namespace ShortestSubarrayWithSum
 
 //        if (list.Last() > K)
 //        {
-//            // at least one element in "A" should be less than or equal to K
+//            at least one element in "A" should be less than or equal to K
 //            return -1;
 //        }
 
@@ -153,9 +192,15 @@ namespace ShortestSubarrayWithSum
 //        for (; (i < list.Length) && (list[i] > K); i++)
 //            ;
 
+//        if ((i != list.Length) && (list[i] == K))
+//        {
+//            Nothing can be less than 1
+//            return 1;
+//        }
+
 //        if (i == list.Length)
 //        {
-//            // all elements are less than or equal to K, so, let's start from beginning
+//            all elements are less than or equal to K, so, let's start from beginning
 //            i = 0;
 //        }
 
