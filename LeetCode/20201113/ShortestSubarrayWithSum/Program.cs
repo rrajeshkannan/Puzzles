@@ -28,9 +28,15 @@ namespace ShortestSubarrayWithSum
 
     public class Solution
     {
-        public int ProblemMax = 50000;
+        private int ProblemMax = 50000;
 
-        public bool SubarraySum (int[] A, int K, int length, int minSubarrayLength, int begin, out int end)
+        private void SkipNegativeOnFront(int[] A, int max, ref int begin)
+        {
+            for (; ((begin < max) && (A[begin] <= 0)); begin++)
+                ;
+        }
+
+        private bool SubarraySum (int[] A, int K, int length, int minSubarrayLength, ref int sum, ref int begin, ref int end)
         {
             int max = begin + minSubarrayLength;
 
@@ -39,7 +45,18 @@ namespace ShortestSubarrayWithSum
                 max = length;
             }
 
-            int sum = 0;
+            for (; ((begin < max) && (A[begin] <= 0)); begin++)
+            {
+                sum -= A[begin];
+            }
+
+            max = begin + minSubarrayLength;
+
+            if (max > length)
+            {
+                max = length;
+            }
+
 
             for (end = begin; end < max; end++)
             {
@@ -65,24 +82,34 @@ namespace ShortestSubarrayWithSum
             var minSubarrayLength = ProblemMax + 1;
             var found = false;
 
-            for (int subarrayBegin = 0; subarrayBegin < length; subarrayBegin++)
+            int subarrayBegin = 0;
+            SkipNegativeOnFront(A, length, ref subarrayBegin);
+
+            int sum = 0;
+            int subarrayEnd = length - 1;
+
+            for (; subarrayBegin < length; )
             {
-                if (SubarraySum(A, K, length, minSubarrayLength, subarrayBegin, out int subarrayEnd))
+                if (SubarraySum(A, K, length, minSubarrayLength, ref sum, ref subarrayBegin, ref subarrayEnd))
                 {
                     found = true;
 
-                    var currentSubarrayLength = subarrayEnd - subarrayBegin + 1;
+                    minSubarrayLength = subarrayEnd - subarrayBegin + 1;
 
-                    if (currentSubarrayLength < minSubarrayLength)
+                    if (minSubarrayLength == 1)
                     {
-                        minSubarrayLength = currentSubarrayLength;
-
-                        if (minSubarrayLength == 1)
-                        {
-                            // Nothing can be lesser than 1
-                            return 1;
-                        }
+                        // Nothing can be lesser than 1
+                        return 1;
                     }
+
+                    sum -= A[subarrayBegin];
+                    subarrayBegin++;
+                }
+                else
+                {
+                    // could not find a subarray between subarrayBegin and subarrayEnd
+                    // so, continue outside this subarray
+                    subarrayBegin = subarrayEnd + 1;
                 }
             }
 
@@ -120,6 +147,16 @@ namespace ShortestSubarrayWithSum
 
             var a6 = new int[] { 17, 85, 93, -45, -21 };
             var result6 = solution.ShortestSubarray(a6, 150); // 2
+
+            // 2,20263,20262
+            // 4,20264,20261
+            // 5,20265,20261
+            // 7,20266,20260
+            // 9,20266,20258
+            // 10,20267,20258
+            // 14,20266,
+
+
 
             // 3416 - Debug
             // 781 - Release
