@@ -39,9 +39,9 @@ namespace ShortestSubarrayWithSum
                 max = length;
             }
 
-            int sum = A[begin];
+            int sum = 0;
 
-            for (end = begin + 1; end < max; end++)
+            for (end = begin; end < max; end++)
             {
                 sum += A[end];
 
@@ -83,8 +83,6 @@ namespace ShortestSubarrayWithSum
                             return 1;
                         }
                     }
-
-                    break;
                 }
             }
 
@@ -119,6 +117,10 @@ namespace ShortestSubarrayWithSum
 
             var time = watch.ElapsedMilliseconds;
             Console.WriteLine(time);
+
+            var a6 = new int[] { 17, 85, 93, -45, -21 };
+            var result6 = solution.ShortestSubarray(a6, 150); // 2
+
             // 3416 - Debug
             // 781 - Release
 
