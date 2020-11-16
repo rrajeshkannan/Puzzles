@@ -1,2 +1,2 @@
-E:\Git\Repos\Puzzles\LeetCode\20201113\ShortestSubarrayWithSum
-E:\Git\Repos\Puzzles\LeetCode\20201113\AdditiveNumber
+\LeetCode\20201110\LongestAwesomeSubstring
+\LeetCode\20201113\AdditiveNumber
