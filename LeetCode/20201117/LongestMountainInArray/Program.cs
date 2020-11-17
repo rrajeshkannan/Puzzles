@@ -52,9 +52,10 @@ namespace LongestMountainInArray
 
                         case Surface.Downhill:
                             {
-                                // start new mountain
-                                maxHillLength = Math.Max(currentHillLength, maxHillLength);
-                                // A[i] contributes to new mountain, so, consider it
+                                // current mountain ends at A[i], so, consider it
+                                maxHillLength = Math.Max(currentHillLength + 1, maxHillLength);
+
+                                // new mountain begins at A[i], so, consider it as part of new mountain also
                                 currentHillLength = 1;
                             }
                             break;
@@ -78,13 +79,15 @@ namespace LongestMountainInArray
                 }
                 else
                 {
-                    switch (currentStanding)
+                    // any current mountain ends or breaks at A[i]
+                    if (currentStanding == Surface.Downhill)
                     {
-                        case Surface.Downhill:
-                            // start new mountain
-                            maxHillLength = Math.Max(currentHillLength, maxHillLength);
-                            currentHillLength = 0;
+                        // current mountain ends at A[i], so, consider it
+                        maxHillLength = Math.Max(currentHillLength + 1, maxHillLength);
                     }
+
+                    // no new mountain begins at A[i], so, do not consider it
+                    currentHillLength = 0;
                 }
             }
 
@@ -96,6 +99,21 @@ namespace LongestMountainInArray
     {
         static void Main(string[] args)
         {
+            var solution = new Solution();
+
+            var numbers1 = new int[] { 2, 1, 4, 7, 3, 2, 5 };
+            var result1 = solution.LongestMountain(numbers1); // 5 - [1,4,7,3,2]
+
+            var numbers2 = new int[] { 2, 2, 2 };
+            var result2 = solution.LongestMountain(numbers2); // 0
+
+            var numbers3 = new int[] { 2, 2, 2, 2, 2 };
+            var result3 = solution.LongestMountain(numbers3); // 0
+
+            var numbers4 = new int[] { 3, 2, 1, 2, 3, 4, 5, 4, 3, 2, 3, 4, 3, 2, 1, 2, 3 };
+            var result4 = solution.LongestMountain(numbers4); // 8
+
+            var numbers5 = new int[] { 2, 2, 3, 4, 3, 1, }
         }
     }
 }
