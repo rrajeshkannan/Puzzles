@@ -88,7 +88,14 @@ namespace LongestMountainInArray
 
                     // no new mountain begins at A[i], so, do not consider it
                     currentHillLength = 0;
+                    currentStanding = Surface.Flat;
                 }
+            }
+
+            if (currentStanding == Surface.Downhill)
+            {
+                // last mountain ends at last element of A - A[length-1] - so, consider it
+                maxHillLength = Math.Max(currentHillLength + 1, maxHillLength);
             }
 
             return maxHillLength;
@@ -113,7 +120,23 @@ namespace LongestMountainInArray
             var numbers4 = new int[] { 3, 2, 1, 2, 3, 4, 5, 4, 3, 2, 3, 4, 3, 2, 1, 2, 3 };
             var result4 = solution.LongestMountain(numbers4); // 8
 
-            var numbers5 = new int[] { 2, 2, 3, 4, 3, 1, }
+            var numbers5 = new int[] { 2, 2, 3, 4, 3, 2, 1, 1, 2, 3, 4, 5, 4, 3 };
+            int result5 = solution.LongestMountain(numbers5); // 7
+
+            var numbers6 = new int[] { 2, 2, 3, 4, 3, 2, 1, 1, 2, 3, 4, 5, 4 };
+            int result6 = solution.LongestMountain(numbers6); // 6
+
+            var numbers7 = new int[] { 2, 2, 3, 4, 3, 2, 1, 2, 3, 4, 5, 4 };
+            int result7 = solution.LongestMountain(numbers7); // 6
+
+            var numbers8 = new int[] { 1, 2, 3, 2, 1 };
+            int result8 = solution.LongestMountain(numbers8); // 5
+
+            var numbers9 = new int[] { 1, 2, 3, 2 };
+            int result9 = solution.LongestMountain(numbers9); // 4
+
+            var numbers10 = new int[] { 1, 2, 3 };
+            int result10 = solution.LongestMountain(numbers10); // 0
         }
     }
 }
