@@ -53,6 +53,14 @@ namespace SmallestStringForNumericValue
                         repeat -= donateFromRepeat;
                     }
 
+                    var kBalance = k - chosen * repeat;
+                    nBalance = n - repeat;
+
+                    if (kBalance < nBalance)
+                    {
+                        repeat--;
+                    }
+
                     result.Insert(0, new string('z', repeat));
                     k -= chosen * repeat;
                     n -= repeat;
@@ -82,14 +90,14 @@ namespace SmallestStringForNumericValue
             var solution = new Solution();
 
             var result1 = solution.GetSmallestString(3, 27); // "aay"
-            //var result2 = solution.GetSmallestString(5, 73); // "aaszz"
-            //var result3 = solution.GetSmallestString(2, 2); // "aa"
-            //var result4 = solution.GetSmallestString(2, 3); // "ab"
-            //var result5 = solution.GetSmallestString(2, 5); // "ad"
-            //var result6 = solution.GetSmallestString(3, 7); // "aae"
-            //var result9 = solution.GetSmallestString(2, 52); // "zz"
-            //var result10 = solution.GetSmallestString(2, 51); // "yz"
-            //var result11 = solution.GetSmallestString(80, 576);
+            var result2 = solution.GetSmallestString(5, 73); // "aaszz"
+            var result3 = solution.GetSmallestString(2, 2); // "aa"
+            var result4 = solution.GetSmallestString(2, 3); // "ab"
+            var result5 = solution.GetSmallestString(2, 5); // "ad"
+            var result6 = solution.GetSmallestString(3, 7); // "aae"
+            var result9 = solution.GetSmallestString(2, 52); // "zz"
+            var result10 = solution.GetSmallestString(2, 51); // "yz"
+            var result11 = solution.GetSmallestString(80, 576);
             //// Expected:
             //// "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaavzzzzzzzzzzzzzzzzzzz"
             //// Actual:
