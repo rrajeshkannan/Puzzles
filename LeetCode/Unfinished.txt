@@ -1,2 +1,5 @@
 \LeetCode\20201110\LongestAwesomeSubstring
 \LeetCode\20201113\AdditiveNumber
+\LeetCode\20201119\MergeIntervals
+\LeetCode\20201119\DecodeString
+\LeetCode\20201122\SmallestStringForNumericValue
