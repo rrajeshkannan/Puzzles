@@ -7,24 +7,87 @@ using System.Threading.Tasks;
 
 namespace BasicCalculatorII
 {
-    public class Node
+    public abstract class Expression
     {
-        public int val;
-        
-        public Node left;
-        
-        public Node right;
+        public abstract int Precedence { get;}
 
-        public Node(int val = 0, Node left = null, Node right = null)
+        public abstract int Resolve();
+    }
+
+    public abstract class BinaryExpression : Expression
+    {
+        protected Expression Left { get; private set; }
+        protected Expression Right { get; private set; }
+
+        public BinaryExpression(Expression left, Expression right)
         {
-            this.val = val;
-            this.left = left;
-            this.right = right;
+            this.Left = left;
+            this.Right = right;
+        }
+    }
+
+    public class Add : BinaryExpression
+    {
+        public Add(Expression left, Expression right) : base (left, right) { }
+
+        public override int Precedence => 1;
+
+        public override int Resolve()
+        {
+            return Left.Resolve() + Right.Resolve();
+        }
+    }
+
+    public class Subtract : BinaryExpression
+    {
+        public Subtract(Expression left, Expression right) : base(left, right) { }
+
+        public override int Precedence => 1;
+
+        public override int Resolve()
+        {
+            return Left.Resolve() - Right.Resolve();
+        }
+    }
+
+    public class Multiply : BinaryExpression
+    {
+        public Multiply(Expression left, Expression right) : base(left, right) { }
+
+        public override int Precedence => 2;
+
+        public override int Resolve()
+        {
+            return Left.Resolve() * Right.Resolve();
+        }
+    }
+
+    public class Divide : BinaryExpression
+    {
+        public Divide(Expression left, Expression right) : base(left, right) { }
+
+        public override int Precedence => 2;
+
+        public override int Resolve()
+        {
+            return Left.Resolve() / Right.Resolve();
+        }
+    }
+
+    public class Literal : Expression
+    {
+        public int Value { get; private set; }
+
+        public override int Precedence => 0;
+
+        public Literal(int value)
+        {
+            Value = value;
         }
 
-        public override string ToString()
+        public override int Resolve()
         {
-            return val.ToString();
+            return Value;
         }
     }
 
