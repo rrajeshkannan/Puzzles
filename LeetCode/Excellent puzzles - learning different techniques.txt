@@ -2,3 +2,7 @@ Solved/Finished - excellent ones:
 \LeetCode\20201113\ShortestSubarrayWithSum
 \LeetCode\20201118\MirrorReflection
 \LeetCode\20201123\HouseRobberIII - Dynamic Programming technique
+
+
+https://stackoverflow.com/a/15447131/1379316 - BigInteger to Hex/Decimal/Octal/Binary strings?
+https://stackoverflow.com/a/4483960/1379316 - How can I get a count of the total number of digits in a number?
