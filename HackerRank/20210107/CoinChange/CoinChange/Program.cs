@@ -3,15 +3,15 @@ using System;
 
 class Result
 {
-    private const int ValueOfEachItem = 5;
-    private static readonly int[] AvailableDenominations = { 20, 10, 5 };
-
     /*
      * Complete the 'can_give_change' function below.
      *
      * The function is expected to return an INTEGER.
      * The function accepts INTEGER_ARRAY rupee_notes as parameter.
      */
+
+    private const int ValueOfEachItem = 5;
+    private static readonly int[] AvailableDenominations = { 20, 10, 5 };
 
     public static int can_give_change(List<int> rupee_notes)
     {
@@ -22,13 +22,8 @@ class Result
             var rupeeReceived = rupee_notes[customerPosition];
             var changeToGive = rupeeReceived - ValueOfEachItem;
 
-            for (int i = 0; i < AvailableDenominations.Length; i++)
+            for (int i = 0; (i < AvailableDenominations.Length) && (changeToGive > 0); i++)
             {
-                if (changeToGive <= 0)
-                {
-                    break;
-                }
-
                 var denomination = AvailableDenominations[i];
 
                 if ((inHand[i] > 0) && (changeToGive >= denomination))
