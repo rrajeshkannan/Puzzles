@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecodeXorArray", "DecodeXorArray\DecodeXorArray.csproj", "{55620252-906A-4930-825C-5E40A4F55775}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55620252-906A-4930-825C-5E40A4F55775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55620252-906A-4930-825C-5E40A4F55775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55620252-906A-4930-825C-5E40A4F55775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55620252-906A-4930-825C-5E40A4F55775}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {34BC4B81-FF2E-4C14-9719-9C0FDDADF8CB}
+	EndGlobalSection
+EndGlobal
