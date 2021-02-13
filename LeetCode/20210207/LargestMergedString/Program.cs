@@ -30,78 +30,39 @@ namespace LargestMergedString
                     break;
                 }
 
-                if (text1[0] > text2[0])
+                if (text1[0] >= text2[0])
                 {
                     merged.Append(text1[0]);
                     text1.Remove(0, 1);
                 }
-                else if (text2[0] > text1[0])
+                else
                 {
                     merged.Append(text2[0]);
                     text2.Remove(0, 1);
                 }
-                else
-                {
-                    int i = 0;
+                //else if (text2[0] > text1[0])
+                //{
+                //    merged.Append(text2[0]);
+                //    text2.Remove(0, 1);
+                //}
+                //else
+                //{
+                //    int i = 0;
 
-                    for (; i < text1.Length; i++)
-                    {
-                        if (text1[i] != text2[0])
-                        {
-                            break;
-                        }
-                    }
+                //    for (; i < text1.Length; i++)
+                //    {
+                //        if (text1[i] != text2[0])
+                //        {
+                //            break;
+                //        }
+                //    }
 
-                    var subLength = Math.Min(i + 1, text1.Length);
-                    var subChosenText = text1.ToString(0, subLength);
+                //    var subLength = Math.Min(i + 1, text1.Length);
+                //    var subChosenText = text1.ToString(0, subLength);
 
-                    merged.Append(subChosenText);
-                    text1.Remove(0, subLength);
-
-                    //    var subChosenText = chosen.ToString(0, subLength);
-                    //    merged.Append(subChosenText);
-                    //    chosen.Remove(0, subLength);
-
-
-                    //var text1Remaining = text1.Length;
-                    //var text2Remaining = text2.Length;
-
-                    //int i = 0;
-                    //var loopUntil = Math.Min(text1Remaining, text2Remaining);
-
-                    //for (; i < loopUntil; i++)
-                    //{
-                    //    if (text1[i] >= text2[i])
-                    //    {
-                    //        break;
-                    //    }
-                    //}
-
-                    //if (i == loopUntil)
-                    //{
-                    //    if (i == text1Remaining)
-                    //    {
-                    //        merged.Append(text2);
-                    //        merged.Append(text1);
-                    //    }
-                    //    else
-                    //    {
-                    //        merged.Append(text1);
-                    //        merged.Append(text2);
-                    //    }
-
-                    //    break;
-                    //}
-                    //else
-                    //{
-                    //    var chosen = (text1[i] > text2[i]) ? text1 : text2;
-                    //    var subLength = i + 1;
-
-                    //    var subChosenText = chosen.ToString(0, subLength);
-                    //    merged.Append(subChosenText);
-                    //    chosen.Remove(0, subLength);
-                    //}
-                }
+                //    merged.Append(subChosenText);
+                //    text1.Remove(0, subLength);
+                //}
             }
 
             return merged.ToString();
