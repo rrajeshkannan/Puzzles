@@ -1,0 +1,50 @@
+Time Zone conversion
+
+GCD & LCM
+
+	Greatest Common Divisor - largest number that divides the given numbers
+		Find the GCD of 45 and 54.
+		Step 1: Find the divisiors of given numbers: The divisiors of 45 are : 1, 3, 5, 9, 15, 45. The divisiors of 54 are : 1, 2, 3, 6, 9, 18, 27, 54
+		Step 2: Find the greatest number that these two lists share in common. In this example the GCD is 9.
+
+	Lowest Common Multiple - smallest number that is a multiple of both given numbers
+		Find the LCM of 6 and 8
+		The multiples of 6 are : 6, 12, 18, 24, 30, . . .
+		The multiples of 8 are : 8, 16, 24, 32, 40, . . .
+		So, the Lowest Common Multiple is 24
+	
+		Also, we can calculate the LCM using the following formula: lcm (a, b) = a * b / gcd (a, b). Now we can find the LCM of 6 and 8 as: (6 * 8) / gcd (6, 8) ==> 48 / 2 = 24
+
+Decimal / Binary / Hex / Roman numerals
+
+Scheduling or Allocation problem
+
+	Two workers
+		First worker can do the job in x days and the second worker takes y days. How long would it take for the two workers together to finish the job?
+	
+		The formula for work problem is: (1 / tb) = (1 / t1) + (1 / t2) where t1 is time taken by the first worker, t2 is time taken by the second worker, tb is time taken by both workers.
+		Example t1=25 and t2=10, so, (1 / tb) = (1 / 25) + (1 / 10)
+		After simplifying we have: (1 / tb) = (7 / 50) => tb = (50/ 7) days
+	
+	Number of workers
+		If x men can do a job in n days, how many would it take to do the job in m days?
+		
+		Example, x = 10, n = 5, m = 2
+		First we calculate how meny men-days are required for entire job: (10 men) × (5 days) = (50 men days). That is, the entire job requires 50 men-days.
+		If entire job need to be done in 2 than we would need: 50 / 2 = 25 men
+		
+	Pipe problem
+		A swimming pool has 2 inlet pipes. One fills the pool in x hours, the other in y hours. The outlet pipe empties the pool in n hours.
+		If the pool is initially empty and all three pipes are open, how many hours will it take to fill up the pool?
+		
+		Example, x=4, y=6, n=3
+		In 1 hour the first inlet pipe fills (1 / 4) of the pool.
+		In 1 hour the second inlet pipe fills (1 / 6) of the pool.
+		In 1 hour the drain empties (1 / 3) of the pool.
+		
+		If all three pipes are open, then in 1 hour the pool fills by: (1 / 4) + (1 / 6) − (1 / 3) = (1 / 12) of its volume.
+		So, time to fill the pool = 12 hours.
+
+
+
+	
