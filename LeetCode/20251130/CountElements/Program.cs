@@ -31,6 +31,5 @@ namespace CountElements
             var elements = CountElements(nums, k);
             Console.WriteLine(elements);
         }
-
     }
 }
